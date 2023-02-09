@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 
 const PermissionProvider = ({
   children,
@@ -17,11 +17,11 @@ const PermissionProvider = ({
   const { pathname } = router;
   const [hasRoutePermission, setHasRoutePermission] = useState(false);
 
-  const setUserPermissionList = (value: string) => {
-    Cookies.set("user_permissions", value, {
-      expires: 1,
-    });
-  };
+  //   const setUserPermissionList = (value: string) => {
+  //     Cookies.set("user_permissions", value, {
+  //       expires: 1,
+  //     });
+  //   };
 
   // * getting the permision for this route
   const getRequiredPermissionForThisRoute = () => {
