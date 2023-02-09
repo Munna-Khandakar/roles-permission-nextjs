@@ -7,6 +7,7 @@ specifiers:
   '@types/react-dom': 18.0.10
   eslint: 8.33.0
   eslint-config-next: 13.1.6
+  js-cookie: ^3.0.1
   next: 13.1.6
   react: 18.2.0
   react-dom: 18.2.0
@@ -19,6 +20,7 @@ dependencies:
   '@types/react-dom': 18.0.10
   eslint: 8.33.0
   eslint-config-next: 13.1.6_4vsywjlpuriuw3tl5oq6zy5a64
+  js-cookie: 3.0.1
   next: 13.1.6_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -1435,6 +1437,11 @@ packages:
 
   /isexe/2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
+    dev: false
+
+  /js-cookie/3.0.1:
+    resolution: {integrity: sha512-+0rgsUXZu4ncpPxRL+lNEptWMOWl9etvPHc/koSRp6MPwpRYAhmk0dUG00J4bxVV3r9uUzfo24wW0knS07SKSw==}
+    engines: {node: '>=12'}
     dev: false
 
   /js-sdsl/4.3.0:
