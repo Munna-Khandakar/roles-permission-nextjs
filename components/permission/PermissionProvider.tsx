@@ -1,43 +1,60 @@
 import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-// import Cookies from "js-cookie";
+import Cookies from "js-cookie";
 
 const PermissionProvider = ({
   children,
   permissionRouteMap,
   userPermissions,
-  publicPathnames,
+  strictMode = false,
 }: {
   children: ReactNode;
   permissionRouteMap: any;
   userPermissions: string[];
-  publicPathnames: string[];
+  strictMode?: boolean;
 }) => {
   const router = useRouter();
   const { pathname } = router;
   const [hasRoutePermission, setHasRoutePermission] = useState(false);
 
-  //   const setUserPermissionList = (value: string) => {
-  //     Cookies.set("user_permissions", value, {
-  //       expires: 1,
-  //     });
-  //   };
+  const setUserPermissionList = (value: string) => {
+    Cookies.set("user_permissions", value, {
+      expires: 1,
+    });
+  };
+
+  const getUserPermissions = () => {
+    return Cookies.get("user_permissions");
+  };
+
+  // * setting the user permisisons in cookie
+  useEffect(() => {
+    const permisisons = getUserPermissions();
+    if (!permisisons) {
+      console.warn("setting permisisons");
+      const jsonData = JSON.stringify(userPermissions);
+      setUserPermissionList(jsonData);
+    }
+  }, []);
 
   // * getting the permision for this route
   const getRequiredPermissionForThisRoute = () => {
     const urlPathValues = pathname.replace("/", "").split("/");
     console.log({ pathname });
-
+    let gotAtleastOnePathInPermissionMap = false;
     const requiredPermissionForThisRoute = [];
-
     let permissionsOfThisRoute = permissionRouteMap;
+
     urlPathValues.forEach((urlPathValue) => {
       if (permissionsOfThisRoute[urlPathValue]) {
+        gotAtleastOnePathInPermissionMap = true;
         permissionsOfThisRoute = permissionsOfThisRoute[urlPathValue];
       }
     });
-    for (let i in permissionsOfThisRoute) {
-      requiredPermissionForThisRoute.push(permissionsOfThisRoute[i]);
+    if (gotAtleastOnePathInPermissionMap) {
+      for (let i in permissionsOfThisRoute) {
+        requiredPermissionForThisRoute.push(permissionsOfThisRoute[i]);
+      }
     }
     return requiredPermissionForThisRoute;
   };
@@ -46,6 +63,12 @@ const PermissionProvider = ({
   const checkRouteHasPermission = () => {
     const requiredPermissionForThisRoute = getRequiredPermissionForThisRoute();
     console.log({ requiredPermissionForThisRoute });
+    if (pathname == "/") {
+      return true;
+    }
+    if (requiredPermissionForThisRoute.length == 0 && !strictMode) {
+      return true;
+    }
     if (userPermissions) {
       if (
         userPermissions.some((group) =>
@@ -57,11 +80,6 @@ const PermissionProvider = ({
         return false;
       }
     }
-  };
-
-  // * checking public pathname
-  const checkRouteIsPublic = () => {
-    return publicPathnames.includes(pathname);
   };
 
   const ForBiddenPage = () => {
@@ -77,19 +95,14 @@ const PermissionProvider = ({
   useEffect(() => {
     if (pathname !== "/404") {
       const routePermission = checkRouteHasPermission();
-      const publicRoute = checkRouteIsPublic();
-      if (routePermission || publicRoute) {
+      console.log({ routePermission });
+      if (routePermission) {
         setHasRoutePermission(true);
       }
     }
   }, [pathname]);
 
-  return (
-    <div>
-      <p>Munna</p>
-      {!hasRoutePermission ? <ForBiddenPage /> : children}
-    </div>
-  );
+  return <div>{!hasRoutePermission ? <ForBiddenPage /> : children}</div>;
 };
 
 export default PermissionProvider;

@@ -11,15 +11,14 @@ const PERMISSION_MAP = {
   "[product_id]": ["products.view", "products.delete", "products.edit"],
 };
 
-const USER_PERMISSION = ["admin.view"];
-const PUBLIC_PATHNAMES = ["/"];
+const USER_PERMISSION = ["admin.view", "products.view"];
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <PermissionProvider
       permissionRouteMap={PERMISSION_MAP}
       userPermissions={USER_PERMISSION}
-      publicPathnames={PUBLIC_PATHNAMES}
+      strictMode={true}
     >
       <Component {...pageProps} />
     </PermissionProvider>
