@@ -35,7 +35,7 @@ const PermissionProvider = ({
       const jsonData = JSON.stringify(userPermissions);
       setUserPermissionList(jsonData);
     }
-  }, []);
+  }, [userPermissions]);
 
   // * getting the permision for this route
   const getRequiredPermissionForThisRoute = () => {

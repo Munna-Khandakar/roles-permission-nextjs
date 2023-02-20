@@ -13,8 +13,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true,
-    // "noImplicitAny": false,
+    "declaration": true,            /* Concatenate & emit output to single file.*/
+    "outDir": "lib",                /* Redirect output to the directory. */
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]
